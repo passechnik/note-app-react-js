@@ -1,17 +1,26 @@
-// NoteEditor.js
 import React, { useState } from 'react';
-import { Paper, TextField, Button, Typography } from '@mui/material';
+import { Paper, Typography, TextareaAutosize, Button, TextField } from '@mui/material';
 
-function NoteEditor() {
-  const [currentNote, setCurrentNote] = useState({ id: null, title: '' });
+export default function NoteEditor({ onSaveNote }) {
+  const [currentNote, setCurrentNote] = useState({ id: null, title: '', content: '' });
 
   const handleNoteChange = (e) => {
+    setCurrentNote({ ...currentNote, content: e.target.value });
+  };
+
+  const handleTitleChange = (e) => {
     setCurrentNote({ ...currentNote, title: e.target.value });
   };
 
   const handleSaveNote = () => {
-    // Implement logic to save the note
-    console.log('Note saved:', currentNote);
+    // create a new note with a unique ID
+    const newNote = { ...currentNote, id: Date.now() };
+
+    // call the onSaveNote function to save the note to the list
+    onSaveNote(newNote);
+
+    // clear the currentNote state for the next note
+    setCurrentNote({ id: null, title: '', content: '' });
   };
 
   return (
@@ -24,14 +33,20 @@ function NoteEditor() {
         fullWidth
         margin="normal"
         value={currentNote.title}
+        onChange={handleTitleChange}
+      />
+      <TextareaAutosize
+        aria-label="empty textarea"
+        placeholder="Start typing..."
+        minRows={4}
+        style={{ width: '100%', fontSize: '1rem', border: 'none', outline: 'none', marginTop: '8px' }}
+        value={currentNote.content}
         onChange={handleNoteChange}
       />
-      <Button variant="contained" color="primary" onClick={handleSaveNote}>
+      <Button variant="contained" color="primary" onClick={handleSaveNote} sx={{ marginTop: '8px' }}>
         Save Note
       </Button>
-      {/* Add more fields or actions for note editing */}
     </Paper>
   );
 }
 
-export default NoteEditor;
