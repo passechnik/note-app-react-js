@@ -29,7 +29,7 @@ export default function NoteEditor({ onSaveNote }) {
         {currentNote.id ? 'Edit Note' : 'Create New Note'}
       </Typography>
       <TextField
-        label="Note Title"
+        label="Add Title"
         fullWidth
         margin="normal"
         value={currentNote.title}
