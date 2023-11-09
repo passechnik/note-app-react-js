@@ -8,10 +8,13 @@ function App() {
   return (
     <Container maxWidth="lg" sx={{ paddingTop: 4 }}>
       <Grid container spacing={2}>
-        <Grid item md={4} xs={12}>
+        {/* left side: NoteList (1/4 of the screen) */}
+        <Grid item md={3} xs={12}>
           <NoteList />
         </Grid>
-        <Grid item md={8} xs={12}>
+
+        {/* right side: NoteEditor (3/4 of the screen) */}
+        <Grid item md={9} xs={12}>
           <NoteEditor />
         </Grid>
       </Grid>
