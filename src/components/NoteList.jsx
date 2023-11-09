@@ -1,17 +1,8 @@
-import React, { useState } from 'react';
-import { Paper, Typography, List, TextareaAutosize, ListItem, Divider, Button } from '@mui/material';
-import NoteEditor from './NoteEditor';
+// NoteList.js
+import React from 'react';
+import { Paper, Typography, List, TextareaAutosize, ListItem, Divider } from '@mui/material';
 
-export default function NoteList() {
-  const [notes, setNotes] = useState([
-    { id: 1, title: 'Note 1' },
-    { id: 2, title: 'Note 2' },
-  ]);
-
-  const addNote = (newNote) => {
-    setNotes([...notes, newNote]);
-  };
-
+export default function NoteList({ notes }) {
   return (
     <Paper elevation={3} sx={{ padding: 2, height: '100%' }}>
       <Typography variant="h6" gutterBottom>
@@ -27,14 +18,13 @@ export default function NoteList() {
                 minRows={4}
                 style={{ width: '100%', fontSize: '1rem', border: 'none', outline: 'none' }}
                 value={note.title}
+                readOnly 
               />
             </ListItem>
             <Divider />
           </React.Fragment>
         ))}
       </List>
-      <NoteEditor onSaveNote={addNote} />
     </Paper>
   );
 }
-
