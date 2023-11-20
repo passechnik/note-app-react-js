@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import { Container, Grid, Button } from '@mui/material';
 import NoteList from './components/NoteList';
@@ -5,38 +6,55 @@ import NoteEditor from './components/NoteEditor';
 import NoteViewer from './components/NoteViewer';
 
 function App() {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState([
+    { id: 1, title: 'Note 1', content: 'Content of Note 1' },
+    { id: 2, title: 'Note 2', content: 'Content of Note 2' },
+  ]);
+
   const [selectedNote, setSelectedNote] = useState(null);
   const [viewingNote, setViewingNote] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleNoteClick = (note) => {
     setSelectedNote(note);
     setViewingNote(true);
+    setIsEditing(false);
   };
 
   const handleEdit = () => {
-    setViewingNote(false);
-    console.log('Edit note:', selectedNote);
+    setIsEditing(true);
   };
 
   const handleDelete = () => {
-    setViewingNote(false);
-    console.log('Delete note:', selectedNote);
-   
+    const updatedNotes = notes.filter((note) => note.id !== selectedNote.id);
+    setNotes(updatedNotes);
+
+    // clear the selected note and set viewingNote and isEditing to false
     setSelectedNote(null);
+    setViewingNote(false);
+    setIsEditing(false);
   };
 
   const handleAddNewNote = () => {
     setViewingNote(false);
-    
-    console.log('Add new note');
+    setIsEditing(true);
   };
 
   const handleSaveNote = (newNote) => {
-  
-    setNotes([...notes, newNote]);
-  
-    console.log('Save note:', newNote);
+    if (isEditing) {
+      // update the existing note in the list
+      setNotes((prevNotes) =>
+        prevNotes.map((note) => (note.id === newNote.id ? { ...note, ...newNote } : note))
+      );
+    } else {
+      // add the new note to the list
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+    }
+
+    // clear the selected note and set viewingNote and isEditing to false
+    setSelectedNote(null);
+    setViewingNote(false);
+    setIsEditing(false);
   };
 
   return (
@@ -47,9 +65,14 @@ function App() {
         </Grid>
         <Grid item md={4} xs={12}>
           {viewingNote ? (
-            <NoteViewer selectedNote={selectedNote} onEdit={handleEdit} onDelete={handleDelete} />
+            <NoteViewer
+              selectedNote={selectedNote}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onAddNewNote={handleAddNewNote}
+            />
           ) : (
-            <NoteEditor onSaveNote={handleSaveNote} />
+            <NoteEditor onSaveNote={handleSaveNote} isEditing={isEditing} selectedNote={selectedNote} />
           )}
         </Grid>
         <Grid item md={4} xs={12}>
