@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Paper, Typography, List, ListItem, Divider, InputBase, IconButton } from '@mui/material';
+import { Paper, Typography, List, ListItem, Divider, InputBase, IconButton, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import DeleteIcon from '@mui/icons-material/Delete'
 
-export default function NoteList({ notes, onNoteClick }) {
+export default function NoteList({ notes, onNoteClick, onDeleteAll }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleNoteClick = (noteId) => {
@@ -34,6 +35,7 @@ export default function NoteList({ notes, onNoteClick }) {
           <SearchIcon />
         </IconButton>
       </div>
+
       {filteredNotes.length === 0 ? (
         <Typography variant="body2">No matching notes</Typography>
       ) : (
@@ -67,6 +69,12 @@ export default function NoteList({ notes, onNoteClick }) {
           ))}
         </List>
       )}
+      <Button onClick={onDeleteAll} color="error" title="Delete All Notes">
+        Delete All
+      <IconButton>
+          <DeleteIcon color="error"/>
+        </IconButton>
+      </Button>
     </Paper>
   );
 }

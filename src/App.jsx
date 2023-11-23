@@ -5,7 +5,7 @@ import NoteList from './components/NoteList';
 import NoteEditor from './components/NoteEditor';
 import NoteViewer from './components/NoteViewer';
 
-function App() {
+export default function App() {
   const [notes, setNotes] = useState([
     { id: 1, title: 'Note 1', content: 'Content of Note 1' },
     { id: 2, title: 'Note 2', content: 'Content of Note 2' },
@@ -57,13 +57,21 @@ function App() {
     setIsEditing(false);
   };
 
+  const handleDeleteAll = () => {
+    // Implement the logic to delete all notes
+    setNotes([]);
+    setSelectedNote(null);
+    setViewingNote(false);
+    setIsEditing(false);
+  }
+
   return (
     <Container maxWidth="lg" sx={{ paddingTop: 4 }}>
       <Grid container spacing={2}>
-        <Grid item md={4} xs={12}>
-          <NoteList notes={notes} onNoteClick={handleNoteClick} />
+        <Grid item md={3} xs={12}>
+          <NoteList notes={notes} onNoteClick={handleNoteClick} onDeleteAll={handleDeleteAll} />
         </Grid>
-        <Grid item md={4} xs={12}>
+        <Grid item md={7} xs={12}>
           {viewingNote ? (
             <NoteViewer
               selectedNote={selectedNote}
@@ -75,7 +83,7 @@ function App() {
             <NoteEditor onSaveNote={handleSaveNote} isEditing={isEditing} selectedNote={selectedNote} />
           )}
         </Grid>
-        <Grid item md={4} xs={12}>
+        <Grid item md={2} xs={12}>
           {/* a small '+' button to add a new note */}
           {!viewingNote && (
             <Button variant="outlined" color="primary" onClick={handleAddNewNote} sx={{ marginTop: 2 }}>
@@ -88,4 +96,3 @@ function App() {
   );
 }
 
-export default App;
