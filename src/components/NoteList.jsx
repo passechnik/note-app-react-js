@@ -1,38 +1,49 @@
 import React, { useState } from 'react';
-import { Paper, Typography, List, ListItem, Divider } from '@mui/material';
+import { Paper, Typography, List, ListItem, Divider, InputBase, IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function NoteList({ notes, onNoteClick }) {
-  if (!notes) {
-    return <div>No notes available.</div>;
-  }
-
-  const [activeNoteId, setActiveNoteId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleNoteClick = (noteId) => {
-    setActiveNoteId(noteId);
     // call the onNoteClick function with the clicked note
     onNoteClick(notes.find((note) => note.id === noteId));
   };
+
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (note.content && note.content.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <Paper elevation={3} sx={{ padding: 2, height: '100%' }}>
       <Typography variant="h6" gutterBottom>
         My Notes
       </Typography>
-      {notes.length === 0 ? (
-        <Typography variant="body2">No notes available</Typography>
+      {/* add the search bar */}
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+        <InputBase
+          placeholder="Search notes..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          fullWidth
+          sx={{ marginRight: '8px' }}
+        />
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+      </div>
+      {filteredNotes.length === 0 ? (
+        <Typography variant="body2">No matching notes</Typography>
       ) : (
         <List>
-          {notes.map((note) => (
+          {filteredNotes.map((note) => (
             <React.Fragment key={note.id}>
               <ListItem
                 disablePadding
                 onClick={() => handleNoteClick(note.id)}
                 sx={{
-                  border: activeNoteId === note.id ? '2px solid #2196f3' : 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  marginBottom: '12px',
                   padding: '16px',
                   display: 'flex',
                   alignItems: 'flex-start',
@@ -43,7 +54,10 @@ export default function NoteList({ notes, onNoteClick }) {
                   {note.title}
                 </Typography>
                 {note.content && (
-                  <Typography variant="body2" sx={{ color: '#757575', marginTop: '8px', textAlign: 'start' }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: '#757575', marginTop: '8px', textAlign: 'start' }}
+                  >
                     {note.content.substring(0, 20)}
                   </Typography>
                 )}
