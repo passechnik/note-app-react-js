@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
-import { Paper, Typography, List, ListItem, Divider, InputBase, IconButton, Button } from '@mui/material';
+import {
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  Divider,
+  InputBase,
+  IconButton,
+  Button,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import DeleteIcon from '@mui/icons-material/Delete'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function NoteList({ notes, onNoteClick, onDeleteAll }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -69,12 +78,14 @@ export default function NoteList({ notes, onNoteClick, onDeleteAll }) {
           ))}
         </List>
       )}
-      <Button onClick={onDeleteAll} color="error" title="Delete All Notes">
-        Delete All
-      <IconButton>
-          <DeleteIcon color="error"/>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Button onClick={onDeleteAll} color="error" title="Delete All Notes">
+          Delete All
+        </Button>
+        <IconButton color="error">
+          <DeleteIcon />
         </IconButton>
-      </Button>
+      </div>
     </Paper>
   );
 }

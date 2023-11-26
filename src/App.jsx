@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from 'react';
 import { Container, Grid, Button } from '@mui/material';
 import NoteList from './components/NoteList';
