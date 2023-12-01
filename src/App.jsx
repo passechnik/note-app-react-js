@@ -20,8 +20,16 @@ export default function App() {
     setIsEditing(false);
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
+  const handleEdit = (editedNote) => {
+    // find the index of the edited note in the notes array
+    const index = notes.findIndex((note) => note.id === editedNote.id);
+
+    // update the notes array with the edited note
+    setNotes((prevNotes) => {
+      const updatedNotes = [...prevNotes];
+      updatedNotes[index] = editedNote;
+      return updatedNotes;
+    });
   };
 
   const handleDelete = () => {
